@@ -1,0 +1,72 @@
+---
+project: CMBU on CMBU
+kind: PIPELINE
+name: pagerduty-actions-trigger-pd-010-sample
+icon: organization,left, is-warm-grey
+enabled: true
+concurrency: 10
+input:
+  API_KEY: ''
+  BODY: ''
+  ESCALATION_POLICY_ID: ''
+  FROM: ''
+  SERVICE_ID: ''
+  TITLE: ''
+  URGENCY: ''
+  USER_IDS: ''
+_inputMeta:
+  URGENCY:
+    description: ''
+    mandatory: true
+  API_KEY:
+    description: ''
+    mandatory: true
+  USER_IDS:
+    description: ''
+    mandatory: false
+  ESCALATION_POLICY_ID:
+    description: ''
+    mandatory: true
+  SERVICE_ID:
+    description: ''
+    mandatory: true
+  TITLE:
+    description: ''
+    mandatory: true
+  FROM:
+    description: ''
+    mandatory: true
+  BODY:
+    description: ''
+    mandatory: true
+workspace:
+  type: DOCKER
+  endpoint: cat-custom-integration-docker-host-vm
+  image: cmbucicd/pagerduty-actions:0.1.0
+  registry: pagerduty-actions-registry
+  path: ''
+  autoCloneForTrigger: false
+  limits:
+    cpu: 1.0
+    memory: 512
+stageOrder:
+- Trigger Incident
+stages:
+  Trigger Incident:
+    taskOrder:
+    - Trigger
+    tasks:
+      Trigger:
+        type: Custom
+        input:
+          name: pagerduty-actions
+          version: 0.1.0
+          properties:
+            apiKey: ${input.API_KEY}
+            from: ${input.FROM}
+            action: triggerIncidentOnEscalationPolicy
+            title: ${input.TITLE}
+            serviceID: ${input.SERVICE_ID}
+            targetID: ${input.ESCALATION_POLICY_ID}
+            body: ${input.BODY}
+            urgency: ${input.URGENCY}

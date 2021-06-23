@@ -1,0 +1,87 @@
+---
+runtime: shell
+code: |
+  /app/pagerduty-actions "$apiKey" "$from" "$action" "$title" "$serviceID" "$targetID" "$body" "$urgency"
+  source /app/output.txt
+    export $(cut -d= -f1 /app/output.txt)
+inputProperties:
+  - name: apiKey
+    type: text
+    title: Api Key
+    placeHolder: Pagerduty Api Key
+    defaultValue: ""
+    bindable: true
+    labelInfo: true
+    labelMessage: Pagerduty Api Key
+  - name: from
+    type: text
+    title: From Email
+    placeHolder: From Email
+    defaultValue: ""
+    bindable: true
+    labelInfo: true
+    labelMessage: From Email
+  - name: action
+    type: select
+    title: Action name
+    placeHolder: Action name
+    defaultValue: 
+    bindable: true
+    labelInfo: true
+    labelMessage:
+    options:
+       - optionKey : triggerIncidentOnUsers
+         optionValue : On Users
+       - optionKey : triggerIncidentOnEscalationPolicy
+         optionValue : On Escalation Policy
+  - name: title
+    type: text
+    title: Title 
+    placeHolder: Incident Title
+    defaultValue: ""
+    bindable: true
+    labelInfo: true
+    labelMessage: Incident Title
+  - name: serviceID
+    type: text
+    title: Pagerduty Service ID
+    placeHolder: Pagerduty Service ID
+    defaultValue: ""
+    bindable: true
+    labelInfo: true
+    labelMessage: Pagerduty Service ID
+  - name: targetID
+    type: text
+    title: Target ID/ID's
+    placeHolder: Enter escalation policy ID or User ID's based on action type
+    defaultValue: ""
+    bindable: true
+    labelInfo: true
+    labelMessage: Enter escalation policy ID or User ID's based on action type
+  - name: body
+    type: text
+    title: Body
+    placeHolder: Body
+    defaultValue: ""
+    bindable: true
+    labelInfo: true
+    labelMessage: Body
+  - name: urgency
+    type: text
+    title: Urgency
+    placeHolder: Urgency
+    defaultValue: ""
+    bindable: true
+    labelInfo: true
+    labelMessage: Urgency
+         
+outputProperties:
+  - name: output
+    type: label
+    title: Output
+  - name: outputHTML
+    type: label
+    title: Output HTML
+  - name: outputPrettyText
+    type: label
+    title: Output Pretty Text
